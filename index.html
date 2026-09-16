@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interest Calculator</title>
+  <!-- Google Fonts: Inter & Outfit for premium high-contrast typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+
+<body>
+  <div id="app" class="app-container">
+    <!-- Header Navbar -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="16" height="20" x="4" y="2" rx="2" />
+            <line x1="8" x2="16" y1="6" y2="6" />
+            <line x1="16" x2="16" y1="14" y2="18" />
+            <path d="M16 10h.01" />
+            <path d="M12 10h.01" />
+            <path d="M8 10h.01" />
+            <path d="M12 14h.01" />
+            <path d="M8 14h.01" />
+            <path d="M12 18h.01" />
+            <path d="M8 18h.01" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Interest Calculator</h1>
+          <p class="subtitle">Date-based interest & audit scrutiny logs</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle dark/light theme" title="Switch Theme">
+          <span class="theme-icon sun-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2" />
+              <path d="M12 20v2" />
+              <path d="m4.93 4.93 1.41 1.41" />
+              <path d="m17.66 17.66 1.41 1.41" />
+              <path d="M2 12h2" />
+              <path d="M20 12h2" />
+              <path d="m6.34 17.66-1.41 1.41" />
+              <path d="m19.07 4.93-1.41 1.41" />
+            </svg>
+          </span>
+          <span class="theme-icon moon-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          </span>
+          <span id="themeLabelText" class="theme-label">Dark Mode</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Layout Grid -->
+    <main class="main-layout">
+      <!-- Left Column: Input Form -->
+      <section class="card calculator-card">
+        <div class="card-header">
+          <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+              <line x1="16" x2="16" y1="2" y2="6" />
+              <line x1="8" x2="8" y1="2" y2="6" />
+              <line x1="3" x2="21" y1="10" y2="10" />
+            </svg>
+            Calculation Details
+          </h2>
+          <span class="badge">Simple & Fast</span>
+        </div>
+
+        <form id="interestForm" onsubmit="return false;">
+          <!-- Principal Amount Input -->
+          <div class="form-group">
+            <label for="principalInput">
+              Principal Amount
+              <span class="required-asterisk">*</span>
+            </label>
+            <div class="input-with-addon">
+              <select id="currencySelect" class="currency-dropdown" title="Select Currency">
+                <option value="₹">₹ (INR)</option>
+                <option value="$">$ (USD)</option>
+                <option value="€">€ (EUR)</option>
+                <option value="£">£ (GBP)</option>
+              </select>
+              <input type="number" id="principalInput" placeholder="e.g. 100000" min="0" step="any" required />
+            </div>
+            <div id="formattedPrincipalHint" class="formatted-hint"></div>
+          </div>
+
+          <!-- Dates Selection Section -->
+          <div class="form-row dates-row">
+            <div class="form-group">
+              <label for="startDateInput">
+                Start Date
+                <span class="required-asterisk">*</span>
+              </label>
+              <input type="date" id="startDateInput" required />
+            </div>
+
+            <div class="form-group">
+              <label for="endDateInput">
+                End Date
+                <span class="required-asterisk">*</span>
+              </label>
+              <input type="date" id="endDateInput" required />
+            </div>
+          </div>
+
+          <!-- Live Days Display & Include Both Days Checkbox -->
+          <div class="date-helpers">
+            <div id="daysCounterBadge" class="days-counter-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span id="daysCountText">0 Days</span>
+            </div>
+
+            <label class="checkbox-container">
+              <input type="checkbox" id="includeBothDaysCheckbox" checked />
+              <span class="checkmark"></span>
+              <span class="checkbox-label">Include both Start & End Dates (+1 day)</span>
+            </label>
+          </div>
+
+          <!-- Rate of Interest Section -->
+          <div class="form-group margin-top-lg">
+            <div class="rate-label-row">
+              <label for="rateInput">
+                Rate of Interest (%)
+                <span class="required-asterisk">*</span>
+              </label>
+              <span class="rate-type-indicator" id="rateTypeBadge">Per Annum (365 Days)</span>
+            </div>
+
+            <!-- Predefined Slab Pills -->
+            <div class="slabs-container">
+              <span class="slabs-title">Default Rate Slabs:</span>
+              <div class="slab-pills">
+                <button type="button" class="slab-pill" data-rate="6.65">6.65%</button>
+                <button type="button" class="slab-pill" data-rate="10.5">10.5%</button>
+                <button type="button" class="slab-pill" data-rate="11.5">11.5%</button>
+              </div>
+            </div>
+
+            <div class="input-with-unit">
+              <input type="number" id="rateInput" placeholder="Enter rate, e.g. 10.5" step="any" min="0" required />
+              <span class="unit-addon">%</span>
+            </div>
+          </div>
+
+          <!-- Optional Scrutiny Note -->
+          <div class="form-group margin-top-md">
+            <label for="noteInput">Remarks / Note (Optional for audit tracking)</label>
+            <input type="text" id="noteInput" placeholder="e.g. Loan to Sharma ji, Bank FD, Gold loan" maxlength="80" />
+          </div>
+
+          <!-- Form Buttons -->
+          <div class="form-actions">
+            <button type="submit" id="calculateBtn" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+              Calculate & Save
+            </button>
+            <button type="button" id="resetBtn" class="btn btn-secondary">Clear</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Right Column: Results Summary -->
+      <section class="card results-card" id="resultsCard">
+        <div class="card-header">
+          <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" x2="12" y1="2" y2="22" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            Interest Summary
+          </h2>
+          <span class="status-indicator">Ready</span>
+        </div>
+
+        <div class="results-body">
+          <!-- Big Highlight Boxes -->
+          <div class="highlight-grid">
+            <div class="highlight-box interest-box">
+              <span class="highlight-label">Total Interest</span>
+              <div class="highlight-value" id="resultInterest">₹ 0.00</div>
+              <span class="highlight-sub" id="resultInterestSub">Earned / Payable</span>
+            </div>
+
+            <div class="highlight-box total-box">
+              <span class="highlight-label">Total Amount</span>
+              <div class="highlight-value" id="resultTotal">₹ 0.00</div>
+              <span class="highlight-sub">Principal + Interest</span>
+            </div>
+          </div>
+
+          <!-- Detailed Scrutiny Breakdown List -->
+          <div class="breakdown-container">
+            <h3 class="breakdown-title">Calculation Breakdown</h3>
+            <ul class="breakdown-list">
+              <li>
+                <span class="b-label">Principal Amount</span>
+                <span class="b-value" id="bPrincipal">₹ 0.00</span>
+              </li>
+              <li>
+                <span class="b-label">Interest Rate</span>
+                <span class="b-value" id="bRate">0.00%</span>
+              </li>
+              <li>
+                <span class="b-label">Duration</span>
+                <span class="b-value" id="bDuration">0 Days</span>
+              </li>
+              <li>
+                <span class="b-label">Time in Years / Months</span>
+                <span class="b-value" id="bTimeEquiv">0 Years</span>
+              </li>
+              <li>
+                <span class="b-label">Daily Interest Rate</span>
+                <span class="b-value" id="bDailyRate">0.0000%</span>
+              </li>
+              <li>
+                <span class="b-label">Daily Interest Amount</span>
+                <span class="b-value" id="bDailyAmount">₹ 0.00 / day</span>
+              </li>
+              <li class="formula-item">
+                <span class="b-label">Calculation Formula</span>
+                <span class="b-value formula-text" id="bFormula">-</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="results-actions">
+            <button type="button" id="copyResultBtn" class="btn btn-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+              </svg>
+              Copy Details
+            </button>
+            <button type="button" id="quickPrintBtn" class="btn btn-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9" />
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                <rect width="12" height="8" x="6" y="14" />
+              </svg>
+              Print Audit Sheet
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Section: History & Scrutiny Logs -->
+    <section class="card history-card margin-top-xl">
+      <div class="card-header history-header">
+        <div>
+          <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            Saved Calculation History & Audit Scrutiny
+          </h2>
+          <p class="section-desc">Keep track of all calculations for verification, printing, and official audit.</p>
+        </div>
+
+        <div class="history-global-actions">
+          <button id="exportCsvBtn" class="btn btn-sm btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+            Export CSV
+          </button>
+          <button id="printHistoryBtn" class="btn btn-sm btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <rect width="12" height="8" x="6" y="14" />
+            </svg>
+            Print Audit Log
+          </button>
+          <button id="clearHistoryBtn" class="btn btn-sm btn-danger-ghost">Clear History</button>
+        </div>
+      </div>
+
+      <!-- History Search & Filter Controls -->
+      <div class="history-controls">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" x2="16.65" y1="21" y2="16.65" />
+          </svg>
+          <input type="text" id="historySearchInput" placeholder="Search by note, amount, or dates..." />
+        </div>
+        <div class="history-count" id="historyCountBadge">0 Records</div>
+      </div>
+
+      <!-- History Table Container -->
+      <div class="table-responsive">
+        <table class="history-table" id="historyTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date Range & Duration</th>
+              <th>Principal</th>
+              <th>Rate</th>
+              <th>Interest</th>
+              <th>Total Amount</th>
+              <th>Remarks / Note</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Empty state rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>•Made with ❤️ for Mom•</p>
+    </footer>
+  </div>
+
+  <!-- Print Sheet Container (Visible only during window.print()) -->
+  <div id="printContainer" class="print-container">
+    <!-- Generated dynamically via JS for clean official PDF / Printout -->
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
