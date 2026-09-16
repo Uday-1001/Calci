@@ -78,13 +78,9 @@ function init() {
   applyTheme(state.theme);
   elements.currencySelect.value = state.currency;
   
-  // Set default dates: Start Date = 1 Month Ago, End Date = Today
-  const today = new Date();
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(today.getMonth() - 1);
-  
-  elements.endDateInput.value = formatDateForInput(today);
-  elements.startDateInput.value = formatDateForInput(oneMonthAgo);
+  // Leave date inputs empty by default
+  elements.startDateInput.value = '';
+  elements.endDateInput.value = '';
   
   // Attach Event Listeners
   attachEventListeners();
