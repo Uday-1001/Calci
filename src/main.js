@@ -666,7 +666,7 @@ function attachEventListeners() {
     elements.currencySelect.value = state.currency;
     elements.startDateInput.value = '';
     elements.endDateInput.value = '';
-    elements.includeBothDaysCheckbox.checked = true;
+    elements.includeBothDaysCheckbox.checked = false;
     state.activeSlab = null;
     elements.slabPills.forEach(p => p.classList.remove('active'));
     
